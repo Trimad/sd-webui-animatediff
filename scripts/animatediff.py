@@ -60,7 +60,7 @@ class AnimateDiffScript(scripts.Script):
             model = gr.Dropdown(choices=["mm_sd_v15.ckpt", "mm_sd_v14.ckpt"], value="mm_sd_v15.ckpt", label="Motion module", type="value")
             with gr.Row():
                 enable = gr.Checkbox(value=False, label='Enable AnimateDiff')
-                video_length = gr.Slider(minimum=1, maximum=24, value=16, step=1, label="Number of frames", precision=0)
+                video_length = gr.Slider(minimum=1, maximum=60, value=60, step=1, label="Number of frames", precision=0)
                 fps = gr.Number(value=8, label="Frames per second (FPS)", precision=0)
                 loop_number = gr.Number(minimum=0, value=0, label="Display loop number (0 = infinite loop)", precision=0)
             with gr.Row():
