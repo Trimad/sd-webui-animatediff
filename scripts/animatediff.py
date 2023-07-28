@@ -60,7 +60,7 @@ class AnimateDiffScript(scripts.Script):
             model = gr.Dropdown(choices=["mm_sd_v15.ckpt", "mm_sd_v14.ckpt"], value="mm_sd_v15.ckpt", label="Motion module", type="value")
             with gr.Row():
                 enable = gr.Checkbox(value=False, label='Enable AnimateDiff')
-                video_length = gr.Slider(minimum=1, maximum=60, value=60, step=1, label="Number of frames", precision=0)
+                video_length = gr.Slider(minimum=1, maximum=60, value=30, step=1, label="Number of frames", precision=0)
                 fps = gr.Number(value=8, label="Frames per second (FPS)", precision=0)
                 loop_number = gr.Number(minimum=0, value=0, label="Display loop number (0 = infinite loop)", precision=0)
             with gr.Row():
@@ -130,14 +130,14 @@ class AnimateDiffScript(scripts.Script):
         if shared.cmd_opts.lowvram:
             self.unload_motion_module()
     
-    def before_process(self, p: StableDiffusionProcessing, enable_animatediff=False, loop_number=0, video_length=16, fps=8, model="mm_sd_v15.ckpt"):
+    def before_process(self, p: StableDiffusionProcessing, enable_animatediff=False, loop_number=0, video_length=30, fps=15, model="mm_sd_v15.ckpt"):
         if enable_animatediff:
             self.logger.info(f"AnimateDiff process start with video Max frames {video_length}, FPS {fps}, duration {video_length/fps},  motion module {model}.")
             assert video_length > 0 and fps > 0, "Video length and FPS should be positive."
             p.batch_size = video_length
             self.inject_motion_modules(p, model)
     
-    def postprocess(self, p: StableDiffusionProcessing, res: Processed, enable_animatediff=False, loop_number=0, video_length=16, fps=8, model="mm_sd_v15.ckpt"):
+    def postprocess(self, p: StableDiffusionProcessing, res: Processed, enable_animatediff=False, loop_number=0, video_length=30, fps=15, model="mm_sd_v15.ckpt"):
         if enable_animatediff:
             self.remove_motion_modules(p)
             video_paths = []
